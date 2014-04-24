@@ -15,6 +15,18 @@ void test_exception(cudaError_t err) {
   }
 }
 
+void test_exception(cufftResult err) {
+  try {
+    CUFFT_EXEC(err);
+  }
+  catch (U::CUFFT_ERROR &e) {
+    std::cout << "Error type: " << e.err << '\n' << "Error occured at "
+              << e.filename << ":" << e.line << ":" << e.funcname << '\n'
+              << e.what() << '\n' << std::endl;
+  }
+}
+
+
 int main(int argc, char const *argv[]) {
   test_exception(cudaSuccess);
   test_exception(cudaErrorMissingConfiguration);
@@ -95,5 +107,19 @@ int main(int argc, char const *argv[]) {
   test_exception(cudaErrorStartupFailure);
   test_exception(cudaErrorApiFailureBase);
 
+  test_exception(CUFFT_SUCCESS);
+  test_exception(CUFFT_INVALID_PLAN);
+  test_exception(CUFFT_ALLOC_FAILED);
+  test_exception(CUFFT_INVALID_TYPE);
+  test_exception(CUFFT_INVALID_VALUE);
+  test_exception(CUFFT_INTERNAL_ERROR);
+  test_exception(CUFFT_EXEC_FAILED);
+  test_exception(CUFFT_SETUP_FAILED);
+  test_exception(CUFFT_INVALID_SIZE);
+  test_exception(CUFFT_UNALIGNED_DATA);
+  test_exception(CUFFT_INCOMPLETE_PARAMETER_LIST);
+  test_exception(CUFFT_INVALID_DEVICE);
+  test_exception(CUFFT_PARSE_ERROR);
+  test_exception(CUFFT_NO_WORKSPACE);
   return 0;
 }
