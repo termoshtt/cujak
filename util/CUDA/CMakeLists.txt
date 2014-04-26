@@ -5,5 +5,7 @@ if(CUDA_FOUND)
     add_subdirectory(test EXCLUDE_FROM_ALL)
     cuda_add_library(cujak_util_cuda STATIC
       ./exception.cpp
+      ./cufft.cu
     )
+    target_link_libraries(cujak_util_cuda ${CUFFT_LIBRARY})
 endif(CUDA_FOUND)
