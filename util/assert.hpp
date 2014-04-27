@@ -25,7 +25,7 @@ struct AssertionFailed : public std::runtime_error {
 
 #define UTIL_ASSERT(expr)                                                      \
   cujak::util::assert(expr, "", __FILE__, __func__, __LINE__)
-#define UTIL_ASSERT(expr, msg)                                                 \
+#define UTIL_ASSERT_MSG(expr, msg)                                             \
   cujak::util::assert(expr, msg, __FILE__, __func__, __LINE__)
 inline void assert(bool expr, const char *msg, const char *filename,
                    const char *funcname, int line) {
