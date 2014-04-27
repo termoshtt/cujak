@@ -1,8 +1,9 @@
 cmake_minimum_required(VERSION 2.8)
 PROJECT(cujak)
 
-include_directories(.)
 set(CMAKE_BUILD_TYPE Release)
+include_directories(.)
+add_definitions("-Wall -std=c++11")
 
 # ctest 
 enable_testing()
@@ -21,4 +22,15 @@ macro(cujak_test name type src)
     unset(test_name)
 endmacro(cujak_test)
 
+# others
+add_custom_target(
+    ctags ALL
+    COMMAND "ctags" "-R" "--languages=C++" "--exclude='CMake*'"
+)
+add_custom_target(
+    document_html
+    COMMAND "doxygen" "doc/Doxyfile"
+)
+
+add_subdirectory(testing)
 add_subdirectory(util)
