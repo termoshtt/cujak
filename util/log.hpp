@@ -8,7 +8,7 @@ namespace cujak {
 namespace util {
 
 inline void log(const std::string &comment, std::ostream &ost) {
-#ifndef LOG_OFF
+#ifndef CUJAK_LOG_OFF
   time_t now;
   time(&now);
   struct tm *tm_now = localtime(&now);
@@ -20,7 +20,7 @@ inline void log(const std::string &comment, std::ostream &ost) {
 
 template <typename T>
 inline void log(const std::string &comment, T num, std::ostream &ost) {
-#ifndef LOG_OFF
+#ifndef CUJAK_LOG_OFF
   time_t now;
   time(&now);
   struct tm *tm_now = localtime(&now);

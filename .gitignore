@@ -34,3 +34,9 @@ TEST*
 CTestTestfile.cmake
 Testing
 
+# documents
+tags
+doc/html
+
+# test results
+*:*:*

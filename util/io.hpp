@@ -1,11 +1,11 @@
 #pragma once
 
 #include "log.hpp"
-#include "output.hpp"
 
 #include <vector>
 #include <algorithm>
 #include <fstream>
+#include <iterator>
 #include <stdexcept>
 #include <boost/lexical_cast.hpp>
 
@@ -66,9 +66,31 @@ std::vector<T> load(std::string filename) {
  * \param N size of data
  * \param data to be saved
  */
-template <typename T, template <class> class Format = ASCII>
-void dump(std::string filename, int N, T *data) {
-  Format<T>::dump(filename, N, data);
+template <class InputIterator, template <class> class Format = ASCII>
+void dump(InputIterator begin, InputIterator end, std::string filename) {
+  typedef typename std::iterator_traits<InputIterator>::value_type T;
+  Format<T>::dump(begin, end, filename);
+}
+
+/** dump data into file
+ * \tparam T typename of data (double, float, int)
+ * \tparam Format ASCII or BINARY
+ *
+ * \param filename in which data will be saved
+ * \param N size of data
+ * \param data to be saved
+ */
+template <class InputIterator, template <class> class Format = ASCII>
+void show(InputIterator begin, InputIterator end, std::ostream &ost) {
+  typedef typename std::iterator_traits<InputIterator>::value_type T;
+  Format<T>::show(begin, end, ost);
+}
+
+template <class InputIterator, template <class> class Format = ASCII>
+void show(InputIterator begin, InputIterator end, InputIterator b2,
+          std::ostream &ost, std::string comma = " ") {
+  typedef typename std::iterator_traits<InputIterator>::value_type T;
+  Format<T>::show(begin, end, b2, ost, comma);
 }
 
 /*
@@ -89,7 +111,37 @@ public:
   static void load(std::string filename, int N, T *data);
   static int load(std::string filename, T *data);
   static std::vector<T> load(std::string filename);
-  static void dump(std::string filename, int N, T *data);
+
+  template <class InputIterator>
+  static void show(InputIterator begin, InputIterator end, std::ostream &ost) {
+    ost << std::scientific << std::setprecision(ASCII<T>::precision());
+    while (begin != end) {
+      ost << *begin++ << '\n';
+    }
+    ost << std::flush;
+  }
+
+  template <class InputIterator>
+  static void show(InputIterator begin, InputIterator end, InputIterator b2,
+                   std::ostream &ost, std::string comma) {
+    ost << std::scientific << std::setprecision(ASCII<T>::precision());
+    while (begin != end) {
+      ost << *begin++ << comma << *b2++ << '\n';
+    }
+    ost << std::flush;
+  }
+
+  template <class InputIterator>
+  static void dump(InputIterator begin, InputIterator end,
+                   std::string filename) {
+    std::ofstream ofs(filename);
+    if (ofs.fail()) {
+      char msg[128];
+      sprintf(msg, "file %s cannot be opened", filename.c_str());
+      throw std::runtime_error(msg);
+    }
+    show(begin, end, ofs);
+  }
 };
 
 template <> int ASCII<float>::precision() { return 8; }
@@ -140,21 +192,6 @@ void ASCII<T>::load(std::string filename, int N, T *data) {
     sprintf(msg, "Cannot enough data from file '%s'", filename);
     throw std::runtime_error(msg);
   }
-}
-
-template <typename T>
-void ASCII<T>::dump(std::string filename, int N, T *data) {
-  std::ofstream ofs(filename);
-  if (ofs.fail()) {
-    char msg[128];
-    sprintf(msg, "file %s cannot be opened", filename.c_str());
-    throw std::runtime_error(msg);
-  }
-  ofs << std::scientific << std::setprecision(ASCII<T>::precision());
-  for (int i = 0; i < N; ++i) {
-    ofs << data[i] << '\n';
-  }
-  ofs << std::flush;
 }
 
 /**
