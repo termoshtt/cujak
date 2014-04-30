@@ -3,7 +3,7 @@
 #include <thrust/device_vector.h>
 #include <thrust/host_vector.h>
 
-namespace FFT = cujak::util::fft2d;
+namespace FFT = cujak::cuda::fft2d;
 
 typedef typename FFT::traits<float>::Real Real;
 typedef typename FFT::traits<float>::Complex Complex;

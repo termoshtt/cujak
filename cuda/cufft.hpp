@@ -3,7 +3,7 @@
 #include "exception.hpp"
 
 namespace cujak {
-namespace util {
+namespace cuda {
 
 namespace fft2d {
 
@@ -50,5 +50,5 @@ inline void r2c(unsigned int Nx, unsigned int Ny,
 
 } // namespace fft2d
 
-} // namespace util
+} // namespace cuda
 } // namespace cujak

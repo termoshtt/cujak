@@ -7,7 +7,7 @@
 #include <string>
 
 namespace cujak {
-namespace util {
+namespace cuda {
 
 struct CUDA_ERROR : public std::exception {
   cudaError_t err;
@@ -26,7 +26,7 @@ inline void cuda_exec(cudaError_t err, const char *filename, int line,
     throw CUDA_ERROR(err, filename, line, funcname);
 }
 
-#define CUDA_EXEC(err) cujak::util::cuda_exec(err, __FILE__, __LINE__, __func__)
+#define CUDA_EXEC(err) cujak::cuda::cuda_exec(err, __FILE__, __LINE__, __func__)
 
 struct CUFFT_ERROR : public std::exception {
   cufftResult err;
@@ -46,7 +46,7 @@ inline void cufft_exec(cufftResult err, const char *filename, int line,
 }
 
 #define CUFFT_EXEC(err)                                                        \
-  cujak::util::cufft_exec(err, __FILE__, __LINE__, __func__)
+  cujak::cuda::cufft_exec(err, __FILE__, __LINE__, __func__)
 
-} // namespace util
+} // namespace cuda
 } // namespace cujak

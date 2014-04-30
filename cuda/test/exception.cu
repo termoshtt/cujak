@@ -2,7 +2,7 @@
 #include "../exception.hpp"
 #include <iostream>
 
-namespace U = cujak::util;
+namespace U = cujak::cuda;
 
 void test_exception(cudaError_t err) {
   try {

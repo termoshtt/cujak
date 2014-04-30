@@ -34,3 +34,4 @@ add_custom_target(
 
 add_subdirectory(testing)
 add_subdirectory(util)
+add_subdirectory(cuda)
