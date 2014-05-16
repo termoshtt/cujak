@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 2.8)
-find_package(CUDA REQUIRED)
+find_package(CUDA MODULE)
 if(CUDA_FOUND)
     include(cuda_util.cmake)
     add_subdirectory(test EXCLUDE_FROM_ALL)
