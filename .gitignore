@@ -23,3 +23,20 @@
 # temporary files
 *~
 .*.sw*
+
+# for cmake
+CMakeCache.txt
+CMakeFiles/
+cmake_install.cmake
+Makefile
+install_manifest.txt
+TEST*
+CTestTestfile.cmake
+Testing
+
+# documents
+tags
+doc/html
+
+# test results
+*:*:*
