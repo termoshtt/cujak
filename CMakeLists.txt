@@ -33,3 +33,4 @@ add_custom_target(
 )
 
 add_subdirectory(util)
+add_subdirectory(testing)
