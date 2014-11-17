@@ -3,7 +3,6 @@
 #include "exception.hpp"
 
 namespace cujak {
-namespace cuda {
 
 namespace fft2d {
 
@@ -31,10 +30,9 @@ inline void c2r(unsigned int Nx, unsigned int Ny,
                 const typename traits<T>::Complex *uf,
                 typename traits<T>::Real *u) {
   cufftHandle plan;
-  CUFFT_EXEC(cufftPlan2d(&plan, Nx, Ny, CUFFT_C2R));
-  CUFFT_EXEC(
-      cufftExecC2R(plan, const_cast<typename traits<T>::Complex *>(uf), u));
-  CUFFT_EXEC(cufftDestroy(plan));
+  exec(cufftPlan2d(&plan, Nx, Ny, CUFFT_C2R));
+  exec(cufftExecC2R(plan, const_cast<typename traits<T>::Complex *>(uf), u));
+  exec(cufftDestroy(plan));
 }
 
 /** one-time R2C conversion */
@@ -43,12 +41,11 @@ inline void r2c(unsigned int Nx, unsigned int Ny,
                 const typename traits<T>::Real *u,
                 typename traits<T>::Complex *uf) {
   cufftHandle plan;
-  CUFFT_EXEC(cufftPlan2d(&plan, Nx, Ny, CUFFT_R2C));
-  CUFFT_EXEC(cufftExecR2C(plan, const_cast<typename traits<T>::Real *>(u), uf));
-  CUFFT_EXEC(cufftDestroy(plan));
+  exec(cufftPlan2d(&plan, Nx, Ny, CUFFT_R2C));
+  exec(cufftExecR2C(plan, const_cast<typename traits<T>::Real *>(u), uf));
+  exec(cufftDestroy(plan));
 }
 
 } // namespace fft2d
 
-} // namespace cuda
 } // namespace cujak

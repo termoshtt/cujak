@@ -2,7 +2,6 @@
 #include "exception.hpp"
 
 namespace cujak {
-namespace cuda {
 
 const char *CUDA_ERROR::what() const throw() {
   switch (err) {
@@ -391,5 +390,4 @@ const char *CUFFT_ERROR::what() const throw() {
   }
 }
 
-} // namespace cuda
 } // namespace cujak

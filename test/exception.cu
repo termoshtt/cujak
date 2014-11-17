@@ -2,27 +2,23 @@
 #include "../exception.hpp"
 #include <iostream>
 
-namespace U = cujak::cuda;
-
 void test_exception(cudaError_t err) {
   try {
-    CUDA_EXEC(err);
+    cujak::exec(err);
   }
-  catch (U::CUDA_ERROR &e) {
-    std::cout << "Error type: " << e.err << '\n' << "Error occured at "
-              << e.filename << ":" << e.line << ":" << e.funcname << '\n'
-              << e.what() << '\n' << std::endl;
+  catch (cujak::CUDA_ERROR &e) {
+    std::cout << "Error type: " << e.err << "\nMessage: "
+              << e.what() << std::endl;
   }
 }
 
 void test_exception(cufftResult err) {
   try {
-    CUFFT_EXEC(err);
+    cujak::exec(err);
   }
-  catch (U::CUFFT_ERROR &e) {
-    std::cout << "Error type: " << e.err << '\n' << "Error occured at "
-              << e.filename << ":" << e.line << ":" << e.funcname << '\n'
-              << e.what() << '\n' << std::endl;
+  catch (cujak::CUFFT_ERROR &e) {
+    std::cout << "Error type: " << e.err << "\nMessage: "
+              << e.what() << std::endl;
   }
 }
 

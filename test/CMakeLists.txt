@@ -1,3 +1,4 @@
 cmake_minimum_required(VERSION 2.8)
-# cujak_cuda_test(cuda_exception S exception.cu CujakCUDA)
-# cujak_cuda_test(cuda_cufft S cufft.cu CujakCUDA)
+
+cujak_add_test(cujak_exception S exception.cu cujak)
+# cujak_add_test(cujak_cufft S cufft.cu cujak)
