@@ -1,36 +1,22 @@
 cmake_minimum_required(VERSION 2.8)
 PROJECT(cujak)
 
-set(CMAKE_BUILD_TYPE Release)
-include_directories(.)
-add_definitions("-Wall -std=c++11")
+find_package(CUDA REQUIRED)
 
-# ctest 
+cuda_add_library(cujak STATIC
+  ./exception.cpp
+)
+target_link_libraries(cujak ${CUDA_cufft_LIBRARY})
+
 enable_testing()
-add_custom_target(short_test COMMAND "ctest" "-R" "TEST_.*_S")
-add_custom_target(long_test COMMAND "ctest" "-V" "-R" "TEST_.*_L" "2>&1" ">" "long.log" "&")
-add_custom_target(plot_test COMMAND "ctest" "-V" "-R" "TEST_.*_PLOT")
-add_custom_target(build_test)
-add_dependencies(short_test build_test)
-
-macro(cujak_test name type src)
+add_custom_target(cujak_test COMMAND "ctest")
+macro(cujak_add_test name type src)
     set(test_name TEST_${name}_${type})
-    add_executable(${test_name} ${src})
+    cuda_add_executable(${test_name} ${src})
     target_link_libraries(${test_name} ${ARGN})
     add_test(${test_name} ${CMAKE_CURRENT_BINARY_DIR}/${test_name})
-    add_dependencies(build_test ${test_name})
+    add_dependencies(cujak_test ${test_name})
     unset(test_name)
-endmacro(cujak_test)
-
-# others
-add_custom_target(
-    ctags ALL
-    COMMAND "ctags" "-R" "--languages=C++" "--exclude='CMake*'"
-)
-add_custom_target(
-    document_html
-    COMMAND "doxygen" "doc/Doxyfile"
-)
-
-add_subdirectory(util)
-add_subdirectory(testing)
+endmacro(cujak_add_test)
+add_subdirectory(test)
+# add_subdirectory(test EXCLUDE_FROM_ALL)
