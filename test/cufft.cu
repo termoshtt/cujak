@@ -1,17 +1,16 @@
 
 #include "../cufft.hpp"
+#include "../thrust.hpp"
+
 #include <thrust/device_vector.h>
 #include <thrust/host_vector.h>
 
-namespace FFT = cujak::cuda::fft2d;
+namespace FFT = cujak::fft2d;
 
 typedef typename FFT::traits<float>::Real Real;
 typedef typename FFT::traits<float>::Complex Complex;
 
-template<typename T>
-T* raw_pointer(thrust::device_vector<T>& u){
-  return thrust::raw_pointer_cast(u.data());
-}
+using cujak::raw_pointer;
 
 int main(int argc, char const *argv[]) {
   const int Nx = 16;
@@ -33,8 +32,6 @@ int main(int argc, char const *argv[]) {
   thrust::device_vector<Complex> uf(Nc);
 
   FFT::r2c<float>(Nx, Ny, raw_pointer(u), raw_pointer(uf));
-
   FFT::c2r<float>(Nx, Ny, raw_pointer(uf), raw_pointer(u));
-
   return 0;
 }
