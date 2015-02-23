@@ -1,22 +1,14 @@
 #pragma once
 
 #include "exception.hpp"
+#include "traits.hpp"
 
 namespace cujak {
 
+/** wrappers for cufft */
 namespace fft2d {
 
-/** type traits for Real/Complex */
-template <typename> class traits;
-
-template <> struct traits<float> {
-  typedef cufftReal Real;
-  typedef cufftComplex Complex;
-};
-template <> struct traits<double> {
-  typedef cufftDoubleReal Real;
-  typedef cufftDoubleComplex Complex;
-};
+using cujak::traits;
 
 /** Size of Complex data @f$ N_x * (N_y / 2 + 1) @f$
  *  (size of Real data is @f$ N_x * N_y @f$) */
@@ -47,5 +39,4 @@ inline void r2c(unsigned int Nx, unsigned int Ny,
 }
 
 } // namespace fft2d
-
 } // namespace cujak
