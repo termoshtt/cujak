@@ -1,5 +1,6 @@
 
 #include "../Converter.hpp"
+#include "../../thrust.hpp"
 #include <fstream>
 #include <iomanip>
 
@@ -23,9 +24,8 @@ int main(int argc, char const *argv[]) {
   ConverterC2R<float> c2r(Nx, Ny);
   ConverterR2C<float> r2c(Nx, Ny);
 
-  Complex c = { 0.0, 1.0 };
-  C.set(0, 1, c);
-  C.set(1, 0, c);
+  C.set(0, 1, cujak::complex<float>(0.0, 1.0));
+  C.set(1, 0, cujak::complex<float>(0.0, 1.0));
 
   C.output_ascii("coef1.dat");
   c2r(C, F);
