@@ -15,7 +15,7 @@ namespace EOM {
  */
 template <class VectorRange> class VectorFunc {
 public:
-  typedef VectorRange VectorRange;
+  typedef VectorRange Vector;
   /** inplace */
   virtual void operator()(VectorRange &) const = 0;
   /** outplace */

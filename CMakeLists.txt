@@ -20,4 +20,5 @@ macro(cujak_add_test name src)
 endmacro(cujak_add_test)
 
 add_subdirectory(cufft)
+add_subdirectory(EOM)
 add_subdirectory(test)

@@ -22,7 +22,7 @@ namespace EOM {
  * @tparam VectorRange thrust-compatible range
  */
 template <class GreenFunc, class NonLinFunc,
-          class VectorRange = typename GreenFunc::VectorRange>
+          class VectorRange = typename GreenFunc::Vector>
 class RK4 : public VectorFunc<VectorRange> {
 public:
   RK4(GreenFunc &, NonLinFunc &);
