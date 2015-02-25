@@ -1,5 +1,7 @@
 #pragma once
 
+#include <cuComplex.h>
+
 namespace cujak {
 
 /** type traits for Real/Complex */
