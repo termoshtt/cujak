@@ -18,5 +18,6 @@ macro(cujak_add_test name type src)
     add_dependencies(cujak_test ${test_name})
     unset(test_name)
 endmacro(cujak_add_test)
+
+add_subdirectory(cufft)
 add_subdirectory(test)
-# add_subdirectory(test EXCLUDE_FROM_ALL)
