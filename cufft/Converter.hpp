@@ -57,5 +57,23 @@ private:
   cufftHandle plan;
 };
 
+/** one-time C2R conversion */
+template <typename T>
+inline void c2r(unsigned int Nx, unsigned int Ny,
+                const typename traits<T>::Complex *uf,
+                typename traits<T>::Real *u) {
+  ConverterC2R<T> conv(Nx, Ny);
+  conv(uf, u);
+}
+
+/** one-time R2C conversion */
+template <typename T>
+inline void r2c(unsigned int Nx, unsigned int Ny,
+                const typename traits<T>::Real *u,
+                typename traits<T>::Complex *uf) {
+  ConverterR2C<T> conv(Nx, Ny);
+  conv(u, uf);
+}
+
 } // namespace fft2d
 } // namespace cujak
