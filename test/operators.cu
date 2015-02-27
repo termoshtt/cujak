@@ -25,5 +25,7 @@ int main(int argc, char const *argv[]) {
 
   exp(c);
 
+  exp(c);
+
   return 0;
 }
