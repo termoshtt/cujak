@@ -25,11 +25,8 @@ int main(int argc, char const *argv[]) {
   C.set(0, 1, cujak::complex<float>(0.0, 1.0));
   C.set(1, 0, cujak::complex<float>(0.0, 1.0));
 
-  C.output_ascii("coef1.dat");
   c2r(C, F);
-  F.output_ascii("field.dat");
   r2c(F, C);
-  C.output_ascii("coef2.dat");
 
   return 0;
 }

@@ -11,6 +11,6 @@ cuda_add_library(cujak_cufft STATIC
   Converter.cu
   fft2d.pb.cc
 )
-target_link_libraries(cujak_cufft cujak)
+target_link_libraries(cujak_cufft cujak protobuf)
 
 add_subdirectory(test)

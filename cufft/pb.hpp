@@ -24,8 +24,8 @@ template <typename T> void save_pb(Field_wrapper<T> &F, std::string filename) {
   const int Nx = F.size_x();
   const int Ny = F.size_y();
   typename pb_traits<T>::Field pb_F;
-  pb_F.set_Nx(Nx);
-  pb_F.set_Ny(Ny);
+  pb_F.set_nx(Nx);
+  pb_F.set_ny(Ny);
   for (int i = 0; i < Nx; ++i) {
     for (int j = 0; j < Ny; ++j) {
       pb_F.add_value(F(i, j));
