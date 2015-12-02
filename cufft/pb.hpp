@@ -35,6 +35,14 @@ std::string add_ext(std::string filename, std::string ext) {
   return filename + ext;
 }
 
+template <typename PB> void pb2ofs(PB &pb, std::string filename) {
+  std::ofstream ofs(filename,
+                    std::ios::out | std::ios::binary | std::ios::trunc);
+  if (!ofs)
+    throw std::runtime_error("Cannot open file: " + filename);
+  pb.SerializeToOstream(&ofs);
+}
+
 template <typename T> void save_pb(Field_wrapper<T> &F, std::string filename) {
   const int Nx = F.size_x();
   const int Ny = F.size_y();
@@ -47,11 +55,7 @@ template <typename T> void save_pb(Field_wrapper<T> &F, std::string filename) {
     }
   }
   filename = add_ext(filename, field_ext<T>());
-  std::ofstream ofs(filename,
-                    std::ios::out | std::ios::binary | std::ios::trunc);
-  if (!ofs)
-    throw std::runtime_error("Cannot open file: " + filename);
-  pb_F.SerializeToOstream(&ofs);
+  pb2ofs(pb_F, filename);
 }
 
 template <typename T>
@@ -69,11 +73,7 @@ void save_pb(Coefficient_wrapper<T> &C, std::string filename) {
     }
   }
   filename = add_ext(filename, coef_ext<T>());
-  std::ofstream ofs(filename,
-                    std::ios::out | std::ios::binary | std::ios::trunc);
-  if (!ofs)
-    throw std::runtime_error("Cannot open file: " + filename);
-  pb_C.SerializeToOstream(&ofs);
+  pb2ofs(pb_C, filename);
 }
 
 } // namespace fft2d
