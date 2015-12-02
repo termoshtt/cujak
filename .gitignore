@@ -20,6 +20,11 @@
 *.out
 *.app
 
+# protocol buffers
+*.pb.h
+*.pb.cc
+*_pb2.py
+
 # temporary files
 *~
 .*.sw*

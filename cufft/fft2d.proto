@@ -1,0 +1,18 @@
+package cujak.fft2d.pb;
+
+message Complex {
+  required double real = 1;
+  required double imag = 2;
+}
+
+message Coefficient {
+  required uint64 Nx = 1;
+  required uint64 Ny = 2;
+  repeated Complex value = 3;
+}
+
+message Field {
+  required uint64 Nx = 1;
+  required uint64 Ny = 2;
+  repeated double value = 3;
+}
