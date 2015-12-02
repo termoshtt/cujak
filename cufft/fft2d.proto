@@ -10,13 +10,13 @@ message dCoefficient {
   required uint64 Nx = 1;
   required uint64 Ny = 2;
   repeated dComplex value = 3;
-}
+} // extention=.dc
 
 message dField {
   required uint64 Nx = 1;
   required uint64 Ny = 2;
   repeated double value = 3;
-}
+} // extention=.df
 
 /** float */
 message fComplex {
@@ -28,10 +28,10 @@ message fCoefficient {
   required uint64 Nx = 1;
   required uint64 Ny = 2;
   repeated fComplex value = 3;
-}
+} // extention=.fc
 
 message fField {
   required uint64 Nx = 1;
   required uint64 Ny = 2;
   repeated float value = 3;
-}
+} // extention=.ff
