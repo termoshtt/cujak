@@ -43,5 +43,6 @@ Testing
 tags
 doc/html
 
-# test results
-*:*:*
+# python
+__pycache__
+*.pyc
