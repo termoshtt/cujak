@@ -27,7 +27,7 @@ public:
       : Nx(Nx_), Ny(Ny_), u(u_.data()) {}
 
   /* accesors */
-  Real get(int i, int j) const { return u[Ny * i + j]; }
+  Real operator()(int i, int j) const { return u[Ny * i + j]; }
   void set(int i, int j, Real v) { u[Ny * i + j] = v; }
 
   Real *get() const { return u.get(); }

@@ -31,10 +31,14 @@ public:
         u(u_.data()) {}
 
   /* accesors */
-  Complex get(int i, int j) const { return u[stride * i + j]; }
+  Complex operator()(int i, int j) const { return u[stride * i + j]; }
   void set(int i, int j, Complex v) { u[stride * i + j] = v; }
 
   Complex *get() const { return u.get(); }
+
+  int size_x() const { return Nx; }
+  int size_y() const { return Ny; }
+  int get_stride() const { return stride; }
 
   void output_ascii(std::string filename) const {
     std::ofstream ofs(filename.c_str());
