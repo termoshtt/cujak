@@ -17,13 +17,13 @@ namespace fft2d {
  *
  * @brief 実空間の場を保持する
  */
-template <typename Float> class Field {
+template <typename Float> class Field_wrapper {
 public:
   typedef typename traits<Float>::Real Real;
   typedef thrust::device_ptr<Real> pReal;
 
-  Field(int Nx_, int Ny_, pReal u_) : Nx(Nx_), Ny(Ny_), u(u_) {}
-  Field(int Nx_, int Ny_, thrust::device_vector<Real> &u_)
+  Field_wrapper(int Nx_, int Ny_, pReal u_) : Nx(Nx_), Ny(Ny_), u(u_) {}
+  Field_wrapper(int Nx_, int Ny_, thrust::device_vector<Real> &u_)
       : Nx(Nx_), Ny(Ny_), u(u_.data()) {}
 
   /* accesors */
@@ -31,6 +31,9 @@ public:
   void set(int i, int j, Real v) { u[Ny * i + j] = v; }
 
   Real *get() const { return u.get(); }
+
+  int size_x() const { return Nx; }
+  int size_y() const { return Ny; }
 
   void output_ascii(std::string filename) const {
     std::ofstream ofs(filename.c_str());
@@ -51,6 +54,14 @@ public:
 private:
   const int Nx, Ny;
   pReal u;
+};
+
+template <typename Float> class Field : public Field_wrapper<Float> {
+  typedef typename Field_wrapper<Float>::Real Real;
+  thrust::device_vector<Real> raw;
+
+public:
+  Field(int Nx, int Ny) : raw(Nx * Ny), Field_wrapper<Float>(Nx, Ny, raw) {}
 };
 
 } // namespace fft2d

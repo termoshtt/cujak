@@ -13,13 +13,11 @@ typedef thrust::host_vector<Complex> hcVector;
 
 using namespace cujak::fft2d;
 
-const int Nx = 128, Ny = 128, Nyc = Ny/2 + 1;
+const int Nx = 128, Ny = 128;
 
 int main(int argc, char const *argv[]) {
-  cVector uf(Nx * Nyc);
-  Vector u(Nx * Ny);
-  Coefficient<float> C(Nx, Ny, uf);
-  Field<float> F(Nx, Ny, u);
+  Field<float> F(Nx, Ny);
+  Coefficient<float> C(Nx, Ny);
 
   ConverterC2R<float> c2r(Nx, Ny);
   ConverterR2C<float> r2c(Nx, Ny);
