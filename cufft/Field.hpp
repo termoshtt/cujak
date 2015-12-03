@@ -17,40 +17,33 @@ namespace fft2d {
  *
  * @brief 実空間の場を保持する
  */
-template <typename Float> class Field {
+template <typename Float> class Field_wrapper {
 public:
   typedef typename traits<Float>::Real Real;
-  typedef thrust::device_ptr<Real> pReal;
+  typedef thrust::device_vector<Real> vector;
 
-  Field(int Nx_, int Ny_, pReal u_) : Nx(Nx_), Ny(Ny_), u(u_) {}
-  Field(int Nx_, int Ny_, thrust::device_vector<Real> &u_)
-      : Nx(Nx_), Ny(Ny_), u(u_.data()) {}
+  Field_wrapper(int Nx_, int Ny_, vector &u_) : Nx(Nx_), Ny(Ny_), u(u_) {}
 
   /* accesors */
-  Real get(int i, int j) const { return u[Ny * i + j]; }
+  Real operator()(int i, int j) const { return u[Ny * i + j]; }
   void set(int i, int j, Real v) { u[Ny * i + j] = v; }
 
-  Real *get() const { return u.get(); }
+  Real *get() const { return u.data().get(); }
 
-  void output_ascii(std::string filename) const {
-    std::ofstream ofs(filename.c_str());
-    ofs << std::scientific << std::setprecision(7);
-    output_ascii(ofs);
-  }
-
-  void output_ascii(std::ostream &ost) const {
-    for (int i = 0; i < Nx; i++) {
-      for (int j = 0; j < Ny; j++) {
-        ost << i << " " << j << " " << u[Ny * i + j] << "\n";
-      }
-      ost << '\n';
-    }
-    ost << std::flush;
-  }
+  int size_x() const { return Nx; }
+  int size_y() const { return Ny; }
 
 private:
   const int Nx, Ny;
-  pReal u;
+  vector &u;
+};
+
+template <typename Float> class Field : public Field_wrapper<Float> {
+  typedef typename Field_wrapper<Float>::Real Real;
+  thrust::device_vector<Real> data;
+
+public:
+  Field(int Nx, int Ny) : data(Nx * Ny), Field_wrapper<Float>(Nx, Ny, data) {}
 };
 
 } // namespace fft2d

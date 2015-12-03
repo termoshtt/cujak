@@ -1,0 +1,37 @@
+package cujak.fft2d.pb;
+
+/** double */
+message dComplex {
+  required double real = 1;
+  required double imag = 2;
+}
+
+message dCoefficient {
+  required uint64 Nx = 1;
+  required uint64 Ny = 2;
+  repeated dComplex value = 3;
+} // extention=.dc
+
+message dField {
+  required uint64 Nx = 1;
+  required uint64 Ny = 2;
+  repeated double value = 3;
+} // extention=.df
+
+/** float */
+message fComplex {
+  required float real = 1;
+  required float imag = 2;
+}
+
+message fCoefficient {
+  required uint64 Nx = 1;
+  required uint64 Ny = 2;
+  repeated fComplex value = 3;
+} // extention=.fc
+
+message fField {
+  required uint64 Nx = 1;
+  required uint64 Ny = 2;
+  repeated float value = 3;
+} // extention=.ff

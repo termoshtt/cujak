@@ -1,2 +1,3 @@
 cmake_minimum_required(VERSION 2.8)
-cujak_add_test(cujak_cufft_convert S convert.cu cujak_cufft)
+cujak_add_test(cufft_convert convert.cu cujak_cufft)
+cujak_add_test(cufft_pb pb.cu cujak_cufft)

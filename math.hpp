@@ -1,6 +1,8 @@
 #pragma once
 
 namespace cujak {
+/** math functions for complex */
+namespace math {
 
 cuComplex exp(cuComplex c) {
   float e = ::exp(c.x);
@@ -14,4 +16,5 @@ cuDoubleComplex exp(cuDoubleComplex c) {
   return cc;
 }
 
+} // namespace math
 } // namespace cujak

@@ -4,6 +4,8 @@
 #include "traits.hpp"
 
 namespace cujak {
+/** operators for Complex */
+namespace operators {
 
 #define cujakDefCPlus(C)                                                       \
   C operator+(C c, C d) { return complex(c.x + d.x, c.y + d.y); }
@@ -40,4 +42,5 @@ cujakDefMinus(double, cuDoubleComplex);
 cujakDefMult(float, cuComplex);
 cujakDefMult(double, cuDoubleComplex);
 
+} // namespace operators
 } // namespace cujak
