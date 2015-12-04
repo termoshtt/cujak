@@ -59,20 +59,30 @@ private:
 
 /** one-time C2R conversion */
 template <typename T>
-inline void c2r(unsigned int Nx, unsigned int Ny,
-                const typename traits<T>::Complex *uf,
-                typename traits<T>::Real *u) {
+void c2r(unsigned int Nx, unsigned int Ny,
+         const typename traits<T>::Complex *uf, typename traits<T>::Real *u) {
   ConverterC2R<T> conv(Nx, Ny);
   conv(uf, u);
 }
 
+template <typename T> void c2r(const Coefficient<T> &C, Field<T> &F) {
+  const int Nx = C.size_x();
+  const int Ny = C.size_y();
+  c2r(Nx, Ny, C.get(), F.get());
+}
+
 /** one-time R2C conversion */
 template <typename T>
-inline void r2c(unsigned int Nx, unsigned int Ny,
-                const typename traits<T>::Real *u,
-                typename traits<T>::Complex *uf) {
+void r2c(unsigned int Nx, unsigned int Ny, const typename traits<T>::Real *u,
+         typename traits<T>::Complex *uf) {
   ConverterR2C<T> conv(Nx, Ny);
   conv(u, uf);
+}
+
+template <typename T> void r2c(const Field<T> &F, Coefficient<T> &C) {
+  const int Nx = F.size_x();
+  const int Ny = F.size_y();
+  r2c(Nx, Ny, F.get(), C.get());
 }
 
 } // namespace fft2d
