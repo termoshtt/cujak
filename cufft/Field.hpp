@@ -32,6 +32,7 @@ public:
 
   int size_x() const { return Nx; }
   int size_y() const { return Ny; }
+  int size() const { return Nx * Ny; }
 
   /** options */
   double Lx = 0.0, Ly = 0.0;

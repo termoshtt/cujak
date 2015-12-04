@@ -14,6 +14,7 @@ void fill_random(Field_wrapper<T> &F, uint64_t seed = std::time(0)) {
   curandCreateGenerator(&qrng, CURAND_RNG_PSEUDO_DEFAULT);
   curandSetPseudoRandomGeneratorSeed(qrng, seed);
   curandGenerateUniform(qrng, F.get(), F.size());
+  curandDestroyGenerator(qrng);
 }
 template <typename T> void fill_random(Coefficient_wrapper<T> &);
 
