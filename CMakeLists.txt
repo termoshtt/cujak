@@ -19,5 +19,5 @@ macro(cujak_add_test name src)
     unset(test_name)
 endmacro(cujak_add_test)
 
-add_subdirectory(cufft)
+add_subdirectory(fft2d)
 add_subdirectory(test)
