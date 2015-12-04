@@ -33,6 +33,11 @@ public:
   int size_x() const { return Nx; }
   int size_y() const { return Ny; }
 
+  /** options */
+  double Lx = 0.0, Ly = 0.0;
+  uint64_t index = 0;
+  double time = 0.0;
+
 private:
   const int Nx, Ny;
   vector &u;

@@ -6,16 +6,25 @@ message dComplex {
   required double imag = 2;
 }
 
+message Option {
+  optional double Lx = 1;
+  optional double Ly = 2;
+  optional uint64 index = 3;
+  optional double time = 4;
+}
+
 message dCoefficient {
   required uint64 Nx = 1;
   required uint64 Ny = 2;
   repeated dComplex value = 3;
+  optional Option opt = 4;
 } // extention=.dc
 
 message dField {
   required uint64 Nx = 1;
   required uint64 Ny = 2;
   repeated double value = 3;
+  optional Option opt = 4;
 } // extention=.df
 
 /** float */
@@ -28,10 +37,12 @@ message fCoefficient {
   required uint64 Nx = 1;
   required uint64 Ny = 2;
   repeated fComplex value = 3;
+  optional Option opt = 4;
 } // extention=.fc
 
 message fField {
   required uint64 Nx = 1;
   required uint64 Ny = 2;
   repeated float value = 3;
+  optional Option opt = 4;
 } // extention=.ff
