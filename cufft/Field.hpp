@@ -29,6 +29,7 @@ public:
   void set(int i, int j, Real v) { u[Ny * i + j] = v; }
 
   Real *get() const { return u.data().get(); }
+  vector &data() const { return u; }
 
   int size_x() const { return Nx; }
   int size_y() const { return Ny; }
