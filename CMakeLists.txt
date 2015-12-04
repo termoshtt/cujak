@@ -6,7 +6,7 @@ find_package(CUDA REQUIRED)
 cuda_add_library(cujak STATIC
   ./exception.cpp
 )
-target_link_libraries(cujak ${CUDA_cufft_LIBRARY})
+target_link_libraries(cujak ${CUDA_cufft_LIBRARY} ${CUDA_curand_LIBRARY})
 
 enable_testing()
 add_custom_target(cujak_test COMMAND "ctest")

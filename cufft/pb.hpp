@@ -49,9 +49,11 @@ template <typename T> void save_pb(Field_wrapper<T> &F, std::string filename) {
   typename pb_traits<T>::Field pb_F;
   pb_F.set_nx(Nx);
   pb_F.set_ny(Ny);
+
+  thrust::host_vector<T> data = F.data();
   for (int i = 0; i < Nx; ++i) {
     for (int j = 0; j < Ny; ++j) {
-      pb_F.add_value(F(i, j));
+      pb_F.add_value(data[Ny * i + j]);
     }
   }
   pb_F.mutable_opt()->set_lx(F.Lx);
