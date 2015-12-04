@@ -54,6 +54,10 @@ template <typename T> void save_pb(Field_wrapper<T> &F, std::string filename) {
       pb_F.add_value(F(i, j));
     }
   }
+  pb_F.mutable_opt()->set_lx(F.Lx);
+  pb_F.mutable_opt()->set_ly(F.Ly);
+  pb_F.mutable_opt()->set_index(F.index);
+  pb_F.mutable_opt()->set_time(F.time);
   filename = add_ext(filename, field_ext<T>());
   pb2ofs(pb_F, filename);
 }
