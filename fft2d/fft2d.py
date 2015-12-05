@@ -33,4 +33,4 @@ def load(filename):
     """
     ext = filename[-2:]
     pb = _loader[ext](filename)
-    return numpy.array(pb.value).reshape(pb.Nx, pb.Ny), pb.opt
+    return numpy.array(pb.value).reshape(pb.Nx, pb.Ny), pb.property
