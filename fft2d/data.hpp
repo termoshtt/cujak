@@ -21,7 +21,7 @@ public:
 
   pb::Property property;
 
-  value_type *get() { return u.data(); }
+  value_type *get() { return u.data().get(); }
   Container &data() const { return u; }
 
   value_type operator()(int i, int j) const { return u[stride * i + j]; }
@@ -35,24 +35,24 @@ public:
 template <typename Float>
 class Field_wrapper : public wrapper_base<typename traits<Float>::rVector> {
 public:
-  typedef traits<Float>::rVector Container;
+  typedef typename traits<Float>::rVector Container;
   Field_wrapper(int Nx, int Ny, Container &u)
       : wrapper_base<Container>(Nx, Ny, Ny, Nx * Ny, u) {}
 };
 
 template <typename Float>
 class Coefficient_wrapper
-    : public wrapper_base<typename traits<Flaot>::cVector> {
+    : public wrapper_base<typename traits<Float>::cVector> {
 
 public:
-  typedef traits<Float>::cVector Container;
+  typedef typename traits<Float>::cVector Container;
   Coefficient_wrapper(int Nx, int Ny, Container &u)
       : wrapper_base<Container>(Nx, Ny, calc_stride(Ny), Nx * calc_stride(Ny),
                                 u) {}
 };
 
 template <typename Float> class Field : public Field_wrapper<Float> {
-  Field_wrapper<Float>::Container data;
+  typename Field_wrapper<Float>::Container data;
 
 public:
   Field(int Nx, int Ny) : data(Nx * Ny), Field_wrapper<Float>(Nx, Ny, data) {}
@@ -60,7 +60,7 @@ public:
 
 template <typename Float>
 class Coefficient : public Coefficient_wrapper<Float> {
-  Coefficient_wrapper<Float>::Container data;
+  typename Coefficient_wrapper<Float>::Container data;
 
 public:
   Coefficient(int Nx, int Ny)
