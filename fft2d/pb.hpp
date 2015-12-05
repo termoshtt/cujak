@@ -1,7 +1,6 @@
 #pragma once
 
-#include "Coefficient.hpp"
-#include "Field.hpp"
+#include "data.hpp"
 #include "fft2d.pb.h"
 #include <fstream>
 
@@ -49,6 +48,7 @@ template <typename T> void save_pb(Field_wrapper<T> &F, std::string filename) {
   typename pb_traits<T>::Field pb_F;
   pb_F.set_nx(Nx);
   pb_F.set_ny(Ny);
+  pb_F.set_allocated_property(&F.property);
 
   thrust::host_vector<T> data = F.data();
   for (int i = 0; i < Nx; ++i) {
@@ -56,10 +56,6 @@ template <typename T> void save_pb(Field_wrapper<T> &F, std::string filename) {
       pb_F.add_value(data[Ny * i + j]);
     }
   }
-  pb_F.mutable_opt()->set_lx(F.Lx);
-  pb_F.mutable_opt()->set_ly(F.Ly);
-  pb_F.mutable_opt()->set_index(F.index);
-  pb_F.mutable_opt()->set_time(F.time);
   filename = add_ext(filename, field_ext<T>());
   pb2ofs(pb_F, filename);
 }

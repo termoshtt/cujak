@@ -1,8 +1,6 @@
 #pragma once
 
-#include "Coefficient.hpp"
-#include "Field.hpp"
-
+#include "data.hpp"
 #include <cufft.h>
 
 namespace cujak {
