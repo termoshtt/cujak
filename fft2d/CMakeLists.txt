@@ -13,4 +13,5 @@ cuda_add_library(cujak_fft2d STATIC
 )
 target_link_libraries(cujak_fft2d cujak protobuf)
 
+add_subdirectory(bin)
 add_subdirectory(test)
