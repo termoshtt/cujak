@@ -78,5 +78,23 @@ void save_pb(Coefficient_wrapper<T> &C, std::string filename) {
   pb2ofs(pb_C, filename);
 }
 
+template <class PB> PB load_pb(std::string filename) {
+  std::ifstream ifs(filename, std::ios::in | std::ios::binary);
+  if (!ifs)
+    throw std::runtime_error("Cannot open file: " + filename);
+  PB pb;
+  pb.ParseFromIstream(&ifs);
+  return pb;
+}
+
+template <typename T> Field<T> pb2field(typename pb_traits<T>::Field pb) {
+  const int Nx = pb.Nx;
+  const int Ny = pb.Ny;
+  Field<T> F(Nx, Ny);
+  F.data() = thrust::host_vector<T>(pb.value().begin(), pb.value().end());
+  F.property = pb.property();
+  return F;
+}
+
 } // namespace fft2d
 } // namespace cujak
