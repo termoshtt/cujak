@@ -21,11 +21,11 @@ public:
 
   pb::Property property;
 
-  value_type *get() { return u.data().get(); }
+  value_type *get() const { return u.data().get(); }
   Container &data() const { return u; }
 
   value_type operator()(int i, int j) const { return u[stride * i + j]; }
-  value_type &operator()(int i, int j) { return u[stride * i + j]; }
+  void set(int i, int j, value_type v) { u[stride * i + j] = v; }
 
   int size_x() const { return Nx; }
   int size_y() const { return Ny; }
