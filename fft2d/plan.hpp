@@ -7,8 +7,8 @@ namespace cujak {
 namespace fft2d {
 
 /*!
- * @class ConverterC2R
- * @headerfile Converter.hpp "cujak/cufft/Converter.hpp"
+ * @class planC2R
+ * @headerfile plan.hpp "cujak/cufft/plan.hpp"
  * @brief Fourier係数から場を計算する
  *
  * cufftHandleの薄いラッパー。
@@ -16,13 +16,13 @@ namespace fft2d {
  * cuFFTのマニュアルによりout-placeで変換する方
  * が推奨されている事に注意し、基本的にout-placeで変換する。
  */
-template <typename Float> class ConverterC2R {
+template <typename Float> class planC2R {
 public:
   typedef typename traits<Float>::Real Real;
   typedef typename traits<Float>::Complex Complex;
 
-  ConverterC2R(int Nx, int Ny);
-  ~ConverterC2R() { cufftDestroy(plan); }
+  planC2R(int Nx, int Ny);
+  ~planC2R() { cufftDestroy(plan); }
   void operator()(const Complex *uf, Real *u) const;
   void operator()(const Coefficient<Float> &uf, Field<Float> &u) const {
     operator()(uf.get(), u.get());
@@ -33,18 +33,18 @@ private:
 };
 
 /*!
- * @class ConverterR2C
- * @headerfile Converter.hpp "cujak/cufft/Converter.hpp"
+ * @class planR2C
+ * @headerfile plan.hpp "cujak/cufft/plan.hpp"
  *
  * @brief 場から係数を計算する
  */
-template <typename Float> class ConverterR2C {
+template <typename Float> class planR2C {
 public:
   typedef typename traits<Float>::Real Real;
   typedef typename traits<Float>::Complex Complex;
 
-  ConverterR2C(int Nx, int Ny);
-  ~ConverterR2C() { cufftDestroy(plan); }
+  planR2C(int Nx, int Ny);
+  ~planR2C() { cufftDestroy(plan); }
   void operator()(const Real *u, Complex *uf) const;
   void operator()(const Field<Float> &u, Coefficient<Float> &uf) const {
     operator()(u.get(), uf.get());
@@ -59,7 +59,7 @@ private:
 template <typename T>
 void c2r(unsigned int Nx, unsigned int Ny,
          const typename traits<T>::Complex *uf, typename traits<T>::Real *u) {
-  ConverterC2R<T> conv(Nx, Ny);
+  planC2R<T> conv(Nx, Ny);
   conv(uf, u);
 }
 
@@ -73,7 +73,7 @@ template <typename T> void c2r(const Coefficient<T> &C, Field<T> &F) {
 template <typename T>
 void r2c(unsigned int Nx, unsigned int Ny, const typename traits<T>::Real *u,
          typename traits<T>::Complex *uf) {
-  ConverterR2C<T> conv(Nx, Ny);
+  planR2C<T> conv(Nx, Ny);
   conv(u, uf);
 }
 

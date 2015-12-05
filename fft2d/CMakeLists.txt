@@ -8,7 +8,7 @@ add_custom_command(
   COMMAND "protoc" "fft2d.proto" "--cpp_out=${CMAKE_CURRENT_BINARY_DIR}"
 )
 cuda_add_library(cujak_fft2d STATIC
-  Converter.cu
+  plan.cu
   fft2d.pb.cc
 )
 target_link_libraries(cujak_fft2d cujak protobuf)

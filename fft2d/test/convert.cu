@@ -1,26 +1,17 @@
 
-#include "../Converter.hpp"
+#include "../plan.hpp"
 #include "../../thrust.hpp"
-#include <fstream>
-#include <iomanip>
 
-typedef typename cujak::traits<float>::Real Real;
-typedef typename cujak::traits<float>::Complex Complex;
-typedef thrust::device_vector<Real> Vector;
-typedef thrust::device_vector<Complex> cVector;
-typedef thrust::host_vector<Real> hVector;
-typedef thrust::host_vector<Complex> hcVector;
+namespace FFT = cujak::fft2d;
 
-using namespace cujak::fft2d;
-
-const int Nx = 128, Ny = 128;
+const int Nx = 128, Ny = 256;
 
 int main(int argc, char const *argv[]) {
-  Field<float> F(Nx, Ny);
-  Coefficient<float> C(Nx, Ny);
+  FFT::Field<float> F(Nx, Ny);
+  FFT::Coefficient<float> C(Nx, Ny);
 
-  ConverterC2R<float> c2r(Nx, Ny);
-  ConverterR2C<float> r2c(Nx, Ny);
+  FFT::planC2R<float> c2r(Nx, Ny);
+  FFT::planR2C<float> r2c(Nx, Ny);
 
   C.set(0, 1, cujak::complex<float>(0.0, 1.0));
   C.set(1, 0, cujak::complex<float>(0.0, 1.0));

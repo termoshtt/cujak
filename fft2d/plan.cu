@@ -1,34 +1,30 @@
 
-#include "Converter.hpp"
+#include "plan.hpp"
 
 #include "../exception.hpp"
 
-namespace cujak{
+namespace cujak {
 namespace fft2d {
 
-template <> ConverterC2R<float>::ConverterC2R(int Nx, int Ny) {
+template <> planC2R<float>::planC2R(int Nx, int Ny) {
   exec(cufftPlan2d(&plan, Nx, Ny, CUFFT_C2R));
 }
-template <> ConverterC2R<double>::ConverterC2R(int Nx, int Ny) {
+template <> planC2R<double>::planC2R(int Nx, int Ny) {
   exec(cufftPlan2d(&plan, Nx, Ny, CUFFT_Z2D));
 }
 
-template <>
-void ConverterC2R<float>::operator()(const Complex *uf, Real *u) const {
+template <> void planC2R<float>::operator()(const Complex *uf, Real *u) const {
   exec(cufftExecC2R(plan, const_cast<Complex *>(uf), u));
 }
 
-template <>
-void ConverterC2R<double>::operator()(const Complex *uf, Real *u) const {
+template <> void planC2R<double>::operator()(const Complex *uf, Real *u) const {
   exec(cufftExecZ2D(plan, const_cast<Complex *>(uf), u));
 }
 
-template <> ConverterR2C<float>::ConverterR2C(int Nx, int Ny) : Nx(Nx), Ny(Ny) {
+template <> planR2C<float>::planR2C(int Nx, int Ny) : Nx(Nx), Ny(Ny) {
   exec(cufftPlan2d(&plan, Nx, Ny, CUFFT_R2C));
 }
-template <>
-ConverterR2C<double>::ConverterR2C(int Nx, int Ny)
-    : Nx(Nx), Ny(Ny) {
+template <> planR2C<double>::planR2C(int Nx, int Ny) : Nx(Nx), Ny(Ny) {
   exec(cufftPlan2d(&plan, Nx, Ny, CUFFT_D2Z));
 }
 
@@ -47,8 +43,7 @@ public:
   }
 };
 
-template <>
-void ConverterR2C<float>::operator()(const Real *u, Complex *uf) const {
+template <> void planR2C<float>::operator()(const Real *u, Complex *uf) const {
   exec(cufftExecR2C(plan, const_cast<Real *>(u), uf));
   thrust::device_ptr<Complex> p(uf);
   int stride = Ny / 2 + 1;
@@ -57,8 +52,7 @@ void ConverterR2C<float>::operator()(const Real *u, Complex *uf) const {
   thrust::transform(p + stride, p + Nx * stride, p + stride, mult<Real>(2 * a));
 }
 
-template <>
-void ConverterR2C<double>::operator()(const Real *u, Complex *uf) const {
+template <> void planR2C<double>::operator()(const Real *u, Complex *uf) const {
   exec(cufftExecD2Z(plan, const_cast<Real *>(u), uf));
   thrust::device_ptr<Complex> p(uf);
   int stride = Ny / 2 + 1;
