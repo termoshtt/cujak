@@ -1,7 +1,6 @@
 #pragma once
 
-#include "Coefficient.hpp"
-#include "Field.hpp"
+#include "data.hpp"
 #include "fft2d.pb.h"
 #include <fstream>
 
@@ -49,6 +48,7 @@ template <typename T> void save_pb(Field_wrapper<T> &F, std::string filename) {
   typename pb_traits<T>::Field pb_F;
   pb_F.set_nx(Nx);
   pb_F.set_ny(Ny);
+  *(pb_F.mutable_property()) = F.property;
 
   thrust::host_vector<T> data = F.data();
   for (int i = 0; i < Nx; ++i) {
@@ -56,10 +56,6 @@ template <typename T> void save_pb(Field_wrapper<T> &F, std::string filename) {
       pb_F.add_value(data[Ny * i + j]);
     }
   }
-  pb_F.mutable_opt()->set_lx(F.Lx);
-  pb_F.mutable_opt()->set_ly(F.Ly);
-  pb_F.mutable_opt()->set_index(F.index);
-  pb_F.mutable_opt()->set_time(F.time);
   filename = add_ext(filename, field_ext<T>());
   pb2ofs(pb_F, filename);
 }
@@ -80,6 +76,24 @@ void save_pb(Coefficient_wrapper<T> &C, std::string filename) {
   }
   filename = add_ext(filename, coef_ext<T>());
   pb2ofs(pb_C, filename);
+}
+
+template <class PB> PB load_pb(std::string filename) {
+  std::ifstream ifs(filename, std::ios::in | std::ios::binary);
+  if (!ifs)
+    throw std::runtime_error("Cannot open file: " + filename);
+  PB pb;
+  pb.ParseFromIstream(&ifs);
+  return pb;
+}
+
+template <typename T> Field<T> pb2field(typename pb_traits<T>::Field pb) {
+  const int Nx = pb.Nx;
+  const int Ny = pb.Ny;
+  Field<T> F(Nx, Ny);
+  F.data() = thrust::host_vector<T>(pb.value().begin(), pb.value().end());
+  F.property = pb.property();
+  return F;
 }
 
 } // namespace fft2d

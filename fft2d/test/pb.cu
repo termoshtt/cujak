@@ -12,8 +12,8 @@ int main(int argc, char const *argv[]) {
       F.set(i, j, i + j);
     }
   }
-  F.Lx = 1.0;
-  F.Ly = 2.0;
+  F.property.set_lx(1.0);
+  F.property.set_ly(2.0);
   FFT::save_pb(F, "test");
   return 0;
 }

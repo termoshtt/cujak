@@ -9,10 +9,10 @@ import argparse
 
 
 def main(args):
-    arr, opt = fft2d.load(args.filename)
+    arr, prop = fft2d.load(args.filename)
     Nx, Ny = arr.shape
-    Lx = opt.Lx if opt.Lx > 0 else 1.0
-    Ly = opt.Ly if opt.Ly > 0 else 1.0
+    Lx = prop.Lx if prop.Lx > 0 else 1.0
+    Ly = prop.Ly if prop.Ly > 0 else 1.0
     X, Y = np.meshgrid(np.linspace(0, Ly, Ny), np.linspace(0, Lx, Nx))
     plt.pcolormesh(X, Y, arr)
     plt.colorbar()
