@@ -11,14 +11,21 @@ template <typename> class traits;
 template <> struct traits<float> {
   typedef float Real;
   typedef cuComplex Complex;
-  typedef thrust::device_vector<Real> rVector;
-  typedef thrust::device_vector<Complex> cVector;
 };
 template <> struct traits<double> {
   typedef double Real;
   typedef cuDoubleComplex Complex;
-  typedef thrust::device_vector<Real> rVector;
-  typedef thrust::device_vector<Complex> cVector;
 };
+
+template <typename T> using Real = T;
+template <typename T> using Complex = typename traits<T>::Complex;
+template <typename T>
+using rdVector = thrust::device_vector<typename traits<T>::Real>;
+template <typename T>
+using cdVector = thrust::device_vector<typename traits<T>::Complex>;
+template <typename T>
+using rhVector = thrust::host_vector<typename traits<T>::Real>;
+template <typename T>
+using chVector = thrust::host_vector<typename traits<T>::Complex>;
 
 } // namespace cujak

@@ -29,42 +29,47 @@ public:
 
   int size_x() const { return Nx; }
   int size_y() const { return Ny; }
-  int size() const { return Nx * Ny; }
+  int size() const { return N; }
+  int get_stride() const { return stride; }
 };
 
 template <typename Float>
-class Field_wrapper : public wrapper_base<typename traits<Float>::rVector> {
+class Field_wrapper : public wrapper_base<rdVector<Float> > {
 public:
-  typedef typename traits<Float>::rVector Container;
+  typedef rdVector<Float> Container;
   Field_wrapper(int Nx, int Ny, Container &u)
       : wrapper_base<Container>(Nx, Ny, Ny, Nx * Ny, u) {}
+  virtual ~Field_wrapper() = default;
 };
 
 template <typename Float>
-class Coefficient_wrapper
-    : public wrapper_base<typename traits<Float>::cVector> {
+class Coefficient_wrapper : public wrapper_base<cdVector<Float> > {
 
 public:
-  typedef typename traits<Float>::cVector Container;
+  typedef cdVector<Float> Container;
   Coefficient_wrapper(int Nx, int Ny, Container &u)
       : wrapper_base<Container>(Nx, Ny, calc_stride(Ny), Nx * calc_stride(Ny),
                                 u) {}
+  virtual ~Coefficient_wrapper() = default;
 };
 
 template <typename Float> class Field : public Field_wrapper<Float> {
-  typename Field_wrapper<Float>::Container data;
+  typename Field_wrapper<Float>::Container data_;
 
 public:
-  Field(int Nx, int Ny) : data(Nx * Ny), Field_wrapper<Float>(Nx, Ny, data) {}
+  Field(int Nx, int Ny) : data_(Nx * Ny), Field_wrapper<Float>(Nx, Ny, data_) {}
 };
 
 template <typename Float>
 class Coefficient : public Coefficient_wrapper<Float> {
-  typename Coefficient_wrapper<Float>::Container data;
+  typedef Coefficient_wrapper<Float> Inhereted;
+  typedef typename Inhereted::Container Container;
+  std::unique_ptr<Container> p;
 
 public:
   Coefficient(int Nx, int Ny)
-      : data(Nx * calc_stride(Ny)), Coefficient_wrapper<Float>(Nx, Ny, data) {}
+      : p(new Container(Nx * calc_stride(Ny))),
+        Coefficient_wrapper<Float>(Nx, Ny, *p) {}
 };
 
 } // namespace fft2d

@@ -1,7 +1,7 @@
 #pragma once
 
 #include "data.hpp"
-#include "pb.hpp"
+#include "pb_traits.hpp"
 #include "../thrust.hpp"
 #include <fstream>
 
