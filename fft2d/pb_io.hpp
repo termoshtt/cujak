@@ -8,7 +8,7 @@
 namespace cujak {
 namespace fft2d {
 
-std::string add_ext(std::string filename, std::string ext) {
+inline std::string add_ext(std::string filename, std::string ext) {
   auto found = filename.find(ext);
   if (found == (filename.size() - ext.size())) {
     return filename;
@@ -16,7 +16,7 @@ std::string add_ext(std::string filename, std::string ext) {
   return filename + ext;
 }
 
-template <typename PB> void pb2ofs(PB &pb, std::string filename) {
+template <typename PB> inline void pb2ofs(PB &pb, std::string filename) {
   std::ofstream ofs(filename,
                     std::ios::out | std::ios::binary | std::ios::trunc);
   if (!ofs)

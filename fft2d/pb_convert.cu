@@ -1,7 +1,6 @@
-#pragma once
 
 #include "data.hpp"
-#include "pb_traits.hpp"
+#include "pb.hpp"
 #include "../thrust.hpp"
 #include <fstream>
 
@@ -20,6 +19,8 @@ typename pb_traits<T>::Field field2pb(const Field_wrapper<T> &F) {
   }
   return pb_F;
 }
+template pb_traits<float>::Field field2pb(const Field_wrapper<float> &F);
+template pb_traits<double>::Field field2pb(const Field_wrapper<double> &F);
 
 template <typename T>
 typename pb_traits<T>::Coefficient coef2pb(const Coefficient_wrapper<T> &C) {
@@ -36,6 +37,10 @@ typename pb_traits<T>::Coefficient coef2pb(const Coefficient_wrapper<T> &C) {
   }
   return pb_C;
 }
+template pb_traits<float>::Coefficient
+coef2pb(const Coefficient_wrapper<float> &C);
+template pb_traits<double>::Coefficient
+coef2pb(const Coefficient_wrapper<double> &C);
 
 template <typename T>
 Field<T> pb2field(typename pb_traits<T>::Field const &pb) {
@@ -47,6 +52,8 @@ Field<T> pb2field(typename pb_traits<T>::Field const &pb) {
   F.property = pb.property();
   return F;
 }
+template Field<float> pb2field(pb_traits<float>::Field const &pb);
+template Field<double> pb2field(pb_traits<double>::Field const &pb);
 
 template <typename T>
 Coefficient<T> pb2coef(typename pb_traits<T>::Coefficient const &pb) {
@@ -61,6 +68,8 @@ Coefficient<T> pb2coef(typename pb_traits<T>::Coefficient const &pb) {
   C.property = pb.property();
   return C;
 }
+template Coefficient<float> pb2coef(pb_traits<float>::Coefficient const &pb);
+template Coefficient<double> pb2coef(pb_traits<double>::Coefficient const &pb);
 
 } // namespace fft2d
 } // namespace cujak

@@ -17,12 +17,12 @@ template <> struct pb_traits<double> {
   typedef pb::dCoefficient Coefficient;
 };
 
-template <typename T> std::string field_ext();
-template <> std::string field_ext<float>() { return ".ff"; }
-template <> std::string field_ext<double>() { return ".df"; }
+template <typename T> inline std::string field_ext();
+template <> inline std::string field_ext<float>() { return ".ff"; }
+template <> inline std::string field_ext<double>() { return ".df"; }
 template <typename T> std::string coef_ext();
-template <> std::string coef_ext<float>() { return ".fc"; }
-template <> std::string coef_ext<double>() { return ".dc"; }
+template <> inline std::string coef_ext<float>() { return ".fc"; }
+template <> inline std::string coef_ext<double>() { return ".dc"; }
 
 } // namespace fft2d
 } // namespace cujak
