@@ -1,12 +1,14 @@
-#pragma once
 
-#include "data.hpp"
-#include "pb_traits.hpp"
-#include "../thrust.hpp"
+#include "pb.hpp"
 #include <fstream>
 
 namespace cujak {
 namespace fft2d {
+
+template <> std::string field_ext<float>() { return ".ff"; }
+template <> std::string field_ext<double>() { return ".df"; }
+template <> std::string coef_ext<float>() { return ".fc"; }
+template <> std::string coef_ext<double>() { return ".dc"; }
 
 inline std::string add_ext(std::string filename, std::string ext) {
   auto found = filename.find(ext);
@@ -22,6 +24,15 @@ template <typename PB> inline void pb2ofs(PB &pb, std::string filename) {
   if (!ofs)
     throw std::runtime_error("Cannot open file: " + filename);
   pb.SerializeToOstream(&ofs);
+}
+
+template <class PB> PB load_pb(std::string filename) {
+  std::ifstream ifs(filename, std::ios::in | std::ios::binary);
+  if (!ifs)
+    throw std::runtime_error("Cannot open file: " + filename);
+  PB pb;
+  pb.ParseFromIstream(&ifs);
+  return pb;
 }
 
 template <typename T> void save_pb(Field_wrapper<T> &F, std::string filename) {
@@ -41,6 +52,8 @@ template <typename T> void save_pb(Field_wrapper<T> &F, std::string filename) {
   filename = add_ext(filename, field_ext<T>());
   pb2ofs(pb_F, filename);
 }
+template void save_pb(Field_wrapper<float> &F, std::string filename);
+template void save_pb(Field_wrapper<double> &F, std::string filename);
 
 template <typename T>
 void save_pb(Coefficient_wrapper<T> &C, std::string filename) {
@@ -62,15 +75,8 @@ void save_pb(Coefficient_wrapper<T> &C, std::string filename) {
   filename = add_ext(filename, coef_ext<T>());
   pb2ofs(pb_C, filename);
 }
-
-template <class PB> PB load_pb(std::string filename) {
-  std::ifstream ifs(filename, std::ios::in | std::ios::binary);
-  if (!ifs)
-    throw std::runtime_error("Cannot open file: " + filename);
-  PB pb;
-  pb.ParseFromIstream(&ifs);
-  return pb;
-}
+template void save_pb(Coefficient_wrapper<float> &C, std::string filename);
+template void save_pb(Coefficient_wrapper<double> &C, std::string filename);
 
 } // namespace fft2d
 } // namespace cujak

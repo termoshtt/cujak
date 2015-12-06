@@ -10,6 +10,7 @@ add_custom_command(
 cuda_add_library(cujak_fft2d STATIC
   plan.cu
   pb_convert.cu
+  pb_io.cu
   fft2d.pb.cc
 )
 target_link_libraries(cujak_fft2d cujak protobuf)
