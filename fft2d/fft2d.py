@@ -14,21 +14,22 @@ def _load(pb_type, filename):
 def _load_field(filename):
     ext = filename[-2:]
     pb = {
-        "ff": _load(fft2d_pb2.fField, filename),
-        "df": _load(fft2d_pb2.dField, filename),
-    }[ext]
+        "ff": lambda fn: _load(fft2d_pb2.fField, fn),
+        "df": lambda fn: _load(fft2d_pb2.dField, fn),
+    }[ext](filename)
     return numpy.array(pb.value).reshape(pb.Nx, pb.Ny), pb.property
 
 
 def _load_coef(filename):
     ext = filename[-2:]
     pb = {
-        "fc": _load(fft2d_pb2.fCoefficient, filename),
-        "dc": _load(fft2d_pb2.dCoefficient, filename),
-    }[ext]
+        "fc": lambda fn: _load(fft2d_pb2.fCoefficient, fn),
+        "dc": lambda fn: _load(fft2d_pb2.dCoefficient, fn),
+    }[ext](filename)
     Nx = pb.Nx
     st = len(pb.value) // Nx
-    return numpy.array([numpy.complex(c.real, c.imag) for c in pb.value]).reshape(Nx, st), pb.property
+    return numpy.array([numpy.complex(c.real, c.imag)
+                        for c in pb.value]).reshape(Nx, st), pb.property
 
 
 def load(filename):
@@ -45,8 +46,8 @@ def load(filename):
         see fft2d.proto for `cujak.fft2d.pb.Property`
 
     """
-    ext = filename[-1:]
+    ext = filename[-1]
     return {
-        "f": _load_field(filename),
-        "c": _load_coef(filename),
-    }[ext]
+        "f": _load_field,
+        "c": _load_coef,
+    }[ext](filename)
