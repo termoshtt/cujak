@@ -35,6 +35,18 @@ template <class PB> PB load_pb(std::string filename) {
   return pb;
 }
 
+template <typename T> pb_Field<T> load_field(std::string filename) {
+  return load_pb<pb_Field<T> >(filename);
+}
+template pb_Field<float> load_field<float>(std::string);
+template pb_Field<double> load_field<double>(std::string);
+
+template <typename T> pb_Coefficient<T> load_coef(std::string filename) {
+  return load_pb<pb_Coefficient<T> >(filename);
+}
+template pb_Coefficient<float> load_coef<float>(std::string);
+template pb_Coefficient<double> load_coef<double>(std::string);
+
 template <typename T> void save_pb(Field_wrapper<T> &F, std::string filename) {
   const int Nx = F.size_x();
   const int Ny = F.size_y();
