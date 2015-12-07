@@ -62,14 +62,12 @@ public:
 
 template <typename Float>
 class Coefficient : public Coefficient_wrapper<Float> {
-  typedef Coefficient_wrapper<Float> Inhereted;
-  typedef typename Inhereted::Container Container;
-  std::unique_ptr<Container> p;
+  typename Coefficient<Float>::Container data_;
 
 public:
   Coefficient(int Nx, int Ny)
-      : p(new Container(Nx * calc_stride(Ny))),
-        Coefficient_wrapper<Float>(Nx, Ny, *p) {}
+      : data_(Nx * calc_stride(Ny)), Coefficient_wrapper<Float>(Nx, Ny, data_) {
+  }
 };
 
 } // namespace fft2d
