@@ -7,7 +7,7 @@
 namespace cujak {
 namespace fft2d {
 
-inline int calc_stride(int Ny) { return (Ny % 2 ? Ny / 2 + 1 : Ny / 2); }
+inline int calc_stride(int Ny) { return Ny / 2 + 1; }
 
 template <typename Container> class wrapper_base {
 protected:
@@ -24,8 +24,20 @@ public:
   value_type *get() const { return u.data().get(); }
   Container &data() const { return u; }
 
-  value_type operator()(int i, int j) const { return u[stride * i + j]; }
-  void set(int i, int j, value_type v) { u[stride * i + j] = v; }
+  value_type operator()(int i, int j) const {
+    if (i >= 0) {
+      return u[stride * i + j];
+    } else {
+      return u[stride * (Nx + i) + j];
+    }
+  }
+  void set(int i, int j, value_type v) {
+    if (i >= 0) {
+      u[stride * i + j] = v;
+    } else {
+      u[stride * (Nx + i) + j] = v;
+    }
+  }
 
   int size_x() const { return Nx; }
   int size_y() const { return Ny; }

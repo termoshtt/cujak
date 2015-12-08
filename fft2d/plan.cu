@@ -1,5 +1,6 @@
 
 #include "plan.hpp"
+#include "data.hpp"
 
 #include "../exception.hpp"
 
@@ -46,19 +47,13 @@ public:
 template <> void planR2C<float>::operator()(const Real *u, Complex *uf) const {
   exec(cufftExecR2C(plan, const_cast<Real *>(u), uf));
   thrust::device_ptr<Complex> p(uf);
-  int stride = Ny / 2 + 1;
-  Real a = 1. / (Nx * Ny);
-  thrust::transform(p, p + stride, p, mult<Real>(a));
-  thrust::transform(p + stride, p + Nx * stride, p + stride, mult<Real>(2 * a));
+  thrust::transform(p, p + Nx * calc_stride(Ny), p, mult<Real>(1. / (Nx * Ny)));
 }
 
 template <> void planR2C<double>::operator()(const Real *u, Complex *uf) const {
   exec(cufftExecD2Z(plan, const_cast<Real *>(u), uf));
   thrust::device_ptr<Complex> p(uf);
-  int stride = Ny / 2 + 1;
-  Real a = 1. / (Nx * Ny);
-  thrust::transform(p, p + stride, p, mult<Real>(a));
-  thrust::transform(p + stride, p + Nx * stride, p + stride, mult<Real>(2 * a));
+  thrust::transform(p, p + Nx * calc_stride(Ny), p, mult<Real>(1. / (Nx * Ny)));
 }
 
 } // namespace fft2d
