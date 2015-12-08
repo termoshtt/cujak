@@ -18,7 +18,7 @@ def plot_field(filename, figure_ext):
     arr, prop = fft2d.load(filename)
     Nx, Ny = arr.shape
     Lx, Ly = _load_size(prop)
-    X, Y = np.meshgrid(np.linspace(0, Ly, Ny), np.linspace(0, Lx, Nx))
+    Y, X = np.meshgrid(np.linspace(0, Ly, Ny), np.linspace(0, Lx, Nx))
     plt.pcolormesh(X, Y, arr)
     plt.colorbar()
     plt.axis("image")
