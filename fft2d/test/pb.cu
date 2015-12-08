@@ -15,5 +15,13 @@ int main(int argc, char const *argv[]) {
   F.property.set_lx(1.0);
   F.property.set_ly(2.0);
   FFT::save_pb(F, "test");
+
+  auto pb_F = FFT::field2pb(F);
+  auto F2 = FFT::pb2field<float>(pb_F);
+
+  FFT::Coefficient<float> C(Nx, Ny);
+  auto pb_C = FFT::coef2pb(C);
+  auto C2 = FFT::pb2coef<float>(pb_C);
+
   return 0;
 }
