@@ -8,3 +8,4 @@ macro(cujak_fft2d_executable name)
 endmacro(cujak_fft2d_executable)
 
 cujak_fft2d_executable(r2c)
+cujak_fft2d_executable(c2r)

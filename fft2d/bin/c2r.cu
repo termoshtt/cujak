@@ -5,15 +5,15 @@
 namespace FFT = cujak::fft2d;
 
 template <typename T> void work(std::string filename) {
-  auto pb = FFT::load_field<T>(filename);
-  FFT::Field<T> F = FFT::pb2field<T>(pb);
-  const int Nx = F.size_x();
-  const int Ny = F.size_y();
-  FFT::planR2C<T> p(Nx, Ny);
-  FFT::Coefficient<T> C(Nx, Ny);
-  p(F, C);
+  auto pb = FFT::load_coef<T>(filename);
+  FFT::Coefficient<T> C = FFT::pb2coef<T>(pb);
+  const int Nx = C.size_x();
+  const int Ny = C.size_y();
+  FFT::planC2R<T> p(Nx, Ny);
+  FFT::Field<T> F(Nx, Ny);
+  p(C, F);
   std::string prefix(filename.begin(), filename.end() - 3);
-  FFT::save_pb(C, prefix);
+  FFT::save_pb(F, prefix);
 }
 
 int main(int argc, char const *argv[]) {
@@ -23,11 +23,11 @@ int main(int argc, char const *argv[]) {
   }
   std::string filename(argv[1]);
   std::string ext(filename.end() - 3, filename.end());
-  if (ext == FFT::field_ext<float>()) {
+  if (ext == FFT::coef_ext<float>()) {
     work<float>(filename);
     return 0;
   }
-  if (ext == FFT::field_ext<double>()) {
+  if (ext == FFT::coef_ext<double>()) {
     work<double>(filename);
     return 0;
   }
