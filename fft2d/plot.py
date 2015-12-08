@@ -28,8 +28,7 @@ def plot_field(filename, figure_ext):
 def plot_coef(filename, figure_ext):
     arr, prop = fft2d.load(filename)
     Nx, Ny = arr.shape
-    Lx, Ly = _load_size(prop)
-    X, Y = np.meshgrid(range(Ny), range(Nx))
+    Y, X = np.meshgrid(range(Ny), range(Nx))
     plt.subplot(211)
     plt.pcolormesh(X, Y, np.real(arr))
     plt.axis("tight")
