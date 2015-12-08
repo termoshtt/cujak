@@ -75,6 +75,7 @@ void save_pb(Coefficient_wrapper<T> &C, std::string filename) {
   typename pb_traits<T>::Coefficient pb_C;
   pb_C.set_nx(Nx);
   pb_C.set_ny(Ny);
+  *(pb_C.mutable_property()) = C.property;
   for (int i = 0; i < Nx; ++i) {
     for (int j = 0; j < stride; ++j) {
       auto c = C(i, j);

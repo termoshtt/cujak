@@ -11,6 +11,7 @@ template <typename T> void work(std::string filename) {
   const int Ny = C.size_y();
   FFT::planC2R<T> p(Nx, Ny);
   FFT::Field<T> F(Nx, Ny);
+  F.property = C.property;
   p(C, F);
   std::string prefix(filename.begin(), filename.end() - 3);
   FFT::save_pb(F, prefix);
