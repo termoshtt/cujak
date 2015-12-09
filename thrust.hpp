@@ -10,7 +10,7 @@ template <typename T> inline T *raw_pointer(thrust::device_vector<T> &u) {
 }
 
 template <typename T>
-inline typename traits<T>::Complex complex(T real, T imag) {
+__host__ __device__ inline typename traits<T>::Complex complex(T real, T imag) {
   typename traits<T>::Complex c = { real, imag };
   return c;
 }
