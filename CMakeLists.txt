@@ -6,12 +6,12 @@ find_package(CUDA REQUIRED)
 cuda_add_library(cujak STATIC
   ./exception.cpp
 )
-target_link_libraries(cujak ${CUDA_cufft_LIBRARY})
+target_link_libraries(cujak ${CUDA_cufft_LIBRARY} ${CUDA_curand_LIBRARY})
 
 enable_testing()
 add_custom_target(cujak_test COMMAND "ctest")
-macro(cujak_add_test name type src)
-    set(test_name TEST_${name}_${type})
+macro(cujak_add_test name src)
+    set(test_name TEST_cujak_${name})
     cuda_add_executable(${test_name} ${src})
     target_link_libraries(${test_name} ${ARGN})
     add_test(${test_name} ${CMAKE_CURRENT_BINARY_DIR}/${test_name})
@@ -19,5 +19,5 @@ macro(cujak_add_test name type src)
     unset(test_name)
 endmacro(cujak_add_test)
 
-add_subdirectory(cufft)
+add_subdirectory(fft2d)
 add_subdirectory(test)

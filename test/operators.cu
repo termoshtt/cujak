@@ -5,7 +5,8 @@
 typedef typename cujak::traits<float>::Real Real;
 typedef typename cujak::traits<float>::Complex Complex;
 
-using namespace cujak;
+using namespace cujak::operators;
+using namespace cujak::math;
 
 int main(int argc, char const* argv[]) {
   Real a = 2.0;

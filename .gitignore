@@ -20,6 +20,11 @@
 *.out
 *.app
 
+# protocol buffers
+*.pb.h
+*.pb.cc
+*_pb2.py
+
 # temporary files
 *~
 .*.sw*
@@ -38,5 +43,6 @@ Testing
 tags
 doc/html
 
-# test results
-*:*:*
+# python
+__pycache__
+*.pyc
