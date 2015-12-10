@@ -18,11 +18,14 @@ protected:
 
 public:
   typedef typename Container::value_type value_type;
+  typedef decltype(u.begin()) iterator;
 
   pb::Property property;
 
   value_type *get() const { return u.data().get(); }
   Container &data() const { return u; }
+  iterator begin() const { return u.begin(); }
+  iterator end() const { return u.end(); }
 
   value_type operator()(int i, int j) const {
     if (i >= 0) {
