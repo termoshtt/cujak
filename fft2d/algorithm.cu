@@ -1,5 +1,6 @@
 
 #include "algorithm.hpp"
+#include "plan.hpp"
 #include <curand.h>
 
 namespace cujak {
@@ -43,6 +44,17 @@ template <> void fill_random(Field_wrapper<double> &F, uint64_t seed) {
   curandGenerateUniformDouble(qrng, F.get(), F.size());
   curandDestroyGenerator(qrng);
 }
+
+template <typename T>
+void fill_random(Coefficient_wrapper<T> &C, uint64_t seed) {
+  const int Nx = C.size_x();
+  const int Ny = C.size_y();
+  Field<T> F(Nx, Ny);
+  fill_random(F, seed);
+  r2c<T>(F, C);
+}
+template void fill_random<float>(Coefficient_wrapper<float> &, uint64_t);
+template void fill_random<double>(Coefficient_wrapper<double> &, uint64_t);
 
 } // namespace fft2d
 } // namespace cujak

@@ -24,7 +24,8 @@ public:
   planC2R(int Nx, int Ny);
   ~planC2R() { cufftDestroy(plan); }
   void operator()(const Complex *uf, Real *u) const;
-  void operator()(const Coefficient<Float> &uf, Field<Float> &u) const {
+  void operator()(const Coefficient_wrapper<Float> &uf,
+                  Field_wrapper<Float> &u) const {
     operator()(uf.get(), u.get());
   }
 
@@ -46,7 +47,8 @@ public:
   planR2C(int Nx, int Ny);
   ~planR2C() { cufftDestroy(plan); }
   void operator()(const Real *u, Complex *uf) const;
-  void operator()(const Field<Float> &u, Coefficient<Float> &uf) const {
+  void operator()(const Field_wrapper<Float> &u,
+                  Coefficient_wrapper<Float> &uf) const {
     operator()(u.get(), uf.get());
   }
 
@@ -63,10 +65,11 @@ void c2r(unsigned int Nx, unsigned int Ny,
   conv(uf, u);
 }
 
-template <typename T> void c2r(const Coefficient<T> &C, Field<T> &F) {
+template <typename T>
+void c2r(const Coefficient_wrapper<T> &C, Field_wrapper<T> &F) {
   const int Nx = C.size_x();
   const int Ny = C.size_y();
-  c2r(Nx, Ny, C.get(), F.get());
+  c2r<T>(Nx, Ny, C.get(), F.get());
 }
 
 /** one-time R2C conversion */
@@ -77,10 +80,11 @@ void r2c(unsigned int Nx, unsigned int Ny, const typename traits<T>::Real *u,
   conv(u, uf);
 }
 
-template <typename T> void r2c(const Field<T> &F, Coefficient<T> &C) {
+template <typename T>
+void r2c(const Field_wrapper<T> &F, Coefficient_wrapper<T> &C) {
   const int Nx = F.size_x();
   const int Ny = F.size_y();
-  r2c(Nx, Ny, F.get(), C.get());
+  r2c<T>(Nx, Ny, F.get(), C.get());
 }
 
 } // namespace fft2d
